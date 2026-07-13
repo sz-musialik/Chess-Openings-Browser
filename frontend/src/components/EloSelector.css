@@ -1,0 +1,13 @@
+.elo-selector-container {
+	width: 90%;
+	background-color: plum;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 0.5rem;
+	margin-bottom: 0.2rem;
+}
+
+.slider-box {
+	width: 90%;
+}

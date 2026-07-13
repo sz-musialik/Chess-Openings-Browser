@@ -1,0 +1,14 @@
+main {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.chessboard-panel {
+	width: 60%;
+	background-color: var(--color-border);
+}
+
+.move-browser-panel {
+	width: 40%;
+}

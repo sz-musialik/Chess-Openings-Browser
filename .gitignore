@@ -1,0 +1,4 @@
+.env
+
+# Ignore placeholders
+./frontend/src/assets/

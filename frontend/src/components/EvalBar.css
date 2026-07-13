@@ -1,0 +1,34 @@
+.eval-bar-box {
+	width: 100%;
+	height: 100%;
+	background-color: red;
+}
+
+.eval-bar-black, .eval-bar-white {
+	background-color: royalblue;
+	width: 100%;
+	height: 5%;
+	font-size: 0.8rem;
+	font-weight: bolder;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.eval-bar-range {
+	width: 100%;
+	height: 90%;
+	background-color: purple;
+}
+
+.eval-bar-black {
+	color: white;
+	background-color: black;
+}
+
+
+.eval-bar-white {
+	color: black;
+	background-color: white;
+}

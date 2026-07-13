@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
+
+:root {
+  /* Base */
+  --color-background: #11151C;
+  --color-surface: #1C2430;
+  --color-border: #3B4655;
+
+  /* Text */
+  --color-text: #F7F8FA;
+  --color-text-muted: #B8C0CC;
+
+  /* Brand */
+  --color-primary: #064789;
+  --color-primary-hover: #0A5CAA;
+
+  /* Accent */
+  --color-secondary: #EDD382;
+  --color-accent: #FC9E4F;
+
+  /* Status */
+  --color-danger: #FF521B;
+  --color-success: #38A169;
+
+  /* Utility */
+  --color-focus: #7DB8FF;
+  --color-overlay: #11151CB3;
+
+  /* Text on colored backgrounds */
+  --color-on-dark: #FFFFFF;
+  --color-on-light: #11151C;
+}
+
+body {
+	background-color: var(--color-background);
+
+	font-family: "Google Sans";
+	font-optical-sizing: auto;
+	font-weight: normal;
+	font-style: normal;
+	font-variation-settings: "GRAD" 0;
+	color: var(--color-on-dark);
+
+	padding: 0;
+	margin: 0;
+}
