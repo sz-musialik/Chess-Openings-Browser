@@ -41,10 +41,6 @@ function App() {
 			<div className='move-browser-panel'>
 				<MoveBrowser gameFen={gameFen} setGameFen={setGameFen}/>
 			</div>
-
-			<div>
-
-			</div>
 		</main>
 	)
 }

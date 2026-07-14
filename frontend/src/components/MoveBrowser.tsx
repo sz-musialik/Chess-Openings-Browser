@@ -31,8 +31,11 @@ const MoveBrowser = ( {gameFen, setGameFen}: MoveBrowserProps ) => {
 
 	const getMoves = async () => {
 		setLoading(true);
+
 		try {
-			const response = await fetch('http://127.0.0.1:8000/api/openings/position');
+			const response = await fetch('http://127.0.0.1:8000/api/openings/position', {
+				body: JSON.stringify({ fen: gameFen })
+			});
 
 			if (!response.ok) {
 				const errorText = await response.text();

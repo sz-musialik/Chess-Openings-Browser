@@ -22,8 +22,6 @@ const ChessboardPanel = ( {gameFen, setGameFen, chessGame}: ChessboardProps ) =>
 			verbose: true
 		});
 
-		console.log("OPCJE DLA: ", square, moves);
-
 		if (moves.length === 0) {
 			setOptionSquares({});
 			return false;
@@ -54,7 +52,7 @@ const ChessboardPanel = ( {gameFen, setGameFen, chessGame}: ChessboardProps ) =>
 	}
 	
 	function onSquareClick({ square, piece }: SquareHandlerArgs) {
-		console.log("KLIKNIETO");
+		console.log(gameFen);
 		if(!moveFrom && piece) {
 			const hasMoveOptions = getMoveOptions(square as Square);
 
@@ -99,13 +97,13 @@ const ChessboardPanel = ( {gameFen, setGameFen, chessGame}: ChessboardProps ) =>
 		}
 
 		setGameFen(chessGame.fen());
+		console.log(gameFen);
 
 		setMoveFrom('');
 		setOptionSquares({});
 	}
 
 	function onPieceDrop({ sourceSquare, targetSquare}: PieceDropHandlerArgs) {
-		console.log("DROPPED");
 		if (!targetSquare) {
 			return false;
 		}
@@ -140,7 +138,7 @@ const ChessboardPanel = ( {gameFen, setGameFen, chessGame}: ChessboardProps ) =>
 	<div className='chessboard-container'>
 		<div className='chessboard-align'>
 			<div className='eval-bar-container'>
-				<EvalBar />
+				<EvalBar gameFen={gameFen}/>
 			</div>
 
 			<div className='chessboard'>

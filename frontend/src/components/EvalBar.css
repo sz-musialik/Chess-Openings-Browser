@@ -8,7 +8,7 @@
 	background-color: royalblue;
 	width: 100%;
 	height: 5%;
-	font-size: 0.8rem;
+	font-size: 0.5em;
 	font-weight: bolder;
 
 	display: flex;
@@ -19,14 +19,13 @@
 .eval-bar-range {
 	width: 100%;
 	height: 90%;
-	background-color: purple;
+	background-color: greenyellow;
 }
 
 .eval-bar-black {
 	color: white;
 	background-color: black;
 }
-
 
 .eval-bar-white {
 	color: black;
