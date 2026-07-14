@@ -4,7 +4,7 @@ type ChessboardProps = {
 	gameFen: string;
 };
 
-const ChessboardPanel = ( {gameFen}: ChessboardProps ) => { 
+const EvalBar = () => { 
 
 
 
@@ -23,4 +23,4 @@ const ChessboardPanel = ( {gameFen}: ChessboardProps ) => {
 
 	</div>
 )}
-export default ChessboardPanel
+export default EvalBar

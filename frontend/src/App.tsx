@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 // import { Routes, Route } from 'react-router-dom'
-import { Chessboard } from 'react-chessboard';
+// import { Chessboard } from 'react-chessboard';
 import { Chess } from 'chess.js';
 import './App.css'
 import Navbar from './components/Navbar'
@@ -29,35 +29,13 @@ function App() {
 	const [lichessData, setLichessData] = useState<LichessExplorerData | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [gameFen, setGameFen] = useState<string>(chessGame.fen());
-	const [moveFrom, setMoveFrom] = useState<string>('');
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	return (
 		<main>
 			<Navbar/>
 
 			<div className='chessboard-panel'>
-				<ChessboardPanel gameFen={gameFen} setGameFen={setGameFen}/>
+				<ChessboardPanel gameFen={gameFen} setGameFen={setGameFen} chessGame={chessGame}/>
 			</div>
 
 			<div className='move-browser-panel'>
