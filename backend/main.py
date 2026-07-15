@@ -1,4 +1,5 @@
 import os
+from typing import List
 from fastapi import FastAPI, HTTPException, responses
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -23,13 +24,19 @@ LICHESS_TOKEN = os.getenv("LICHESS_TOKEN")
 API_BASE_URL = "https://lichess.org"
 API_EXPLORER_BASE_URL = "https://explorer.lichess.org"
 
+
+class PositionRequest(BaseModel):
+    fen: str
+
 @app.get("/api/openings/masters")
-def get_masters_openings():
+def get_masters_openings(position: PositionRequest):
     if not LICHESS_TOKEN:
         raise HTTPException(status_code=500, detail="No Lichess token on the backend")
 
+    fen = position.fen
     url = API_BASE_URL + "/masters"
     headers = {"Accept": "application/json", "Authorization": f"Bearer {LICHESS_TOKEN}"}
+    params={"fen": fen, "moves": 5, "variant": "standard"}
 
     try:
         response = requests.get(url=url, headers=headers)
@@ -44,6 +51,7 @@ def get_masters_openings():
 
 class LinesRequest(BaseModel):
     fen: str
+    ratings: List[int]
 
 
 """
@@ -51,18 +59,28 @@ Returns a list of 5 moves with the best evaluation.
 
 Args:
     fen (str): FEN notation of the current position.
+    ratings (list[int]): List of Lichess players ratings.
 """
 @app.post("/api/openings/position")
-def get_top_moves(position: LinesRequest):
+def get_top_moves(lines: LinesRequest):
     if not LICHESS_TOKEN:
         raise HTTPException(status_code=500, detail="No Lichess token on the backend")
 
-    fen = position.fen
+    fen = lines.fen
+    ratings = lines.ratings
     url = API_EXPLORER_BASE_URL + "/lichess"
     headers = {"Accept": "application/json", "Authorization": f"Bearer {LICHESS_TOKEN}"}
-    params={"fen": fen, "moves": 5, "variant": "standard"}
+    params={
+        "variant": "standard",
+        "fen": fen,
+        "ratings": ",".join(map(str, ratings)),
+        "moves": 5
+    }
 
     try:
+        req = requests.Request(url=url, params=params, headers=headers).prepare()
+        print(req.url)
+
         response = requests.get(url=url, params=params, headers=headers)
 
         if response.status_code != 200:
@@ -71,10 +89,6 @@ def get_top_moves(position: LinesRequest):
         return response.json()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-class PositionRequest(BaseModel):
-    fen: str
 
 
 if __name__ == "__main__":

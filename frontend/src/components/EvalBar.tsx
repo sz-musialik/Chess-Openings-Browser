@@ -20,7 +20,6 @@ type ChessboardProps = {
 
 const EvalBar = ({gameFen}: ChessboardProps) => { 
 	const [loading, setLoading] = useState<boolean>(false);
-	const [evalScore, setEvalScore] = useState<number>(0.0);
 
 	const engine = useMemo(() => new Engine(), []);
 	

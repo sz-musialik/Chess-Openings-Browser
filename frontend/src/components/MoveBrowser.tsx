@@ -1,8 +1,9 @@
 import './MoveBrowser.css';
 import './MoveCard.tsx';
 import EloSelector from './EloSelector.tsx';
+import { getRatingsInRange } from './EloSelector.tsx';
 import MoveCard from './MoveCard.tsx';
-import { useState, type Dispatch, type SetStateAction } from 'react';
+import { useState, useEffect, type Dispatch, type SetStateAction, useMemo } from 'react';
 import { Button } from '@mui/material';
 
 interface LichessMove {
@@ -29,6 +30,8 @@ const MoveBrowser = ( {gameFen, setGameFen}: MoveBrowserProps ) => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [lichessData, setLichessData] = useState<LichessExplorerData | null>(null);
 
+	const ratings = useMemo(() => getRatingsInRange(eloValue), [eloValue]);
+
 	const getMoves = async () => {
 		setLoading(true);
 
@@ -38,7 +41,10 @@ const MoveBrowser = ( {gameFen, setGameFen}: MoveBrowserProps ) => {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ fen: gameFen })
+				body: JSON.stringify({
+					fen: gameFen,
+					ratings: ratings
+				})
 			});
 
 			if (!response.ok) {
@@ -58,7 +64,22 @@ const MoveBrowser = ( {gameFen, setGameFen}: MoveBrowserProps ) => {
 		}
 	};
 
-	
+	useEffect(() => {
+		if(!gameFen) {
+			return;
+		}
+
+		// getMoves();
+	}, [gameFen]);
+
+
+	// useEffect(() => {
+	// 	if (!eloValue) {
+	// 		return;
+	// 	}
+	//
+	// 	setRatings(getRatingsInRange(eloValue));
+	// }, [eloValue]);
 
 	return (
 	<div className='move-browser-container'>
