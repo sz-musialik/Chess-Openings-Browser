@@ -21,6 +21,7 @@ app.add_middleware(
 LICHESS_TOKEN = os.getenv("LICHESS_TOKEN")
 
 API_BASE_URL = "https://lichess.org"
+API_EXPLORER_BASE_URL = "https://explorer.lichess.org"
 
 @app.get("/api/openings/masters")
 def get_masters_openings():
@@ -40,23 +41,29 @@ def get_masters_openings():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
+class LinesRequest(BaseModel):
+    fen: str
+
+
 """
 Returns a list of 5 moves with the best evaluation.
 
 Args:
     fen (str): FEN notation of the current position.
 """
-@app.get("/api/openings/position")
-def get_moves_from_position():
+@app.post("/api/openings/position")
+def get_top_moves(position: LinesRequest):
     if not LICHESS_TOKEN:
         raise HTTPException(status_code=500, detail="No Lichess token on the backend")
 
-    # I need to somehow pass the current position and put it as a param
-    url = API_BASE_URL + "/lichess?variant=standard&moves=5"
+    fen = position.fen
+    url = API_EXPLORER_BASE_URL + "/lichess"
     headers = {"Accept": "application/json", "Authorization": f"Bearer {LICHESS_TOKEN}"}
+    params={"fen": fen, "moves": 5, "variant": "standard"}
 
     try:
-        response = requests.get(url=url, headers=headers)
+        response = requests.get(url=url, params=params, headers=headers)
 
         if response.status_code != 200:
             raise HTTPException(status_code=response.status_code, detail=response.text)
@@ -68,35 +75,6 @@ def get_moves_from_position():
 
 class PositionRequest(BaseModel):
     fen: str
-
-"""
-Returns cloud evaluation of the current position
-
-Args:
-    fen (str): FEN notation of the current position.
-"""
-@app.post("/api/position/evaluation")
-def evaluate_position(position: PositionRequest):
-    if not LICHESS_TOKEN:
-        raise HTTPException(status_code=500, detail="No Lichess token on the backend")
-
-    fen = position.fen
-    url = API_BASE_URL + "/api/cloud-eval"
-    headers = {"Accept": "application/json"}
-
-    try:
-        response = requests.get(url=url, params={"fen": fen}, headers=headers)
-
-        if response.status_code != 200:
-            raise HTTPException(status_code=response.status_code, detail=response.text)
-
-        return response.json()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    
-
-
-
 
 
 if __name__ == "__main__":

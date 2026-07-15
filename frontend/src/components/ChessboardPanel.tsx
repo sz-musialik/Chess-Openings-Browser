@@ -52,7 +52,6 @@ const ChessboardPanel = ( {gameFen, setGameFen, chessGame}: ChessboardProps ) =>
 	}
 	
 	function onSquareClick({ square, piece }: SquareHandlerArgs) {
-		console.log(gameFen);
 		if(!moveFrom && piece) {
 			const hasMoveOptions = getMoveOptions(square as Square);
 
@@ -97,7 +96,6 @@ const ChessboardPanel = ( {gameFen, setGameFen, chessGame}: ChessboardProps ) =>
 		}
 
 		setGameFen(chessGame.fen());
-		console.log(gameFen);
 
 		setMoveFrom('');
 		setOptionSquares({});
