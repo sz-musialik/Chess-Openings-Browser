@@ -28,8 +28,10 @@ const EvalBar = ({gameFen}: ChessboardProps) => {
 	const [bestLine, setBestLine] = useState<string>('');
 	const [possibleMate, setPossibleMate] = useState<string>('');
 
+	const whiteMove = gameFen.split(' ')[1] === 'w';
+
 	const findBestMove = () => {
-		engine.evaluatePosition(gameFen, 75);
+		engine.evaluatePosition(gameFen, 25);
 		engine.onMessage(({
 			positionEvaluation,
 			possibleMate,
@@ -58,12 +60,6 @@ const EvalBar = ({gameFen}: ChessboardProps) => {
 		});
 	};
 
-	const formatScore = (score: number) => {
-		if (score > 0) return `+${score.toFixed(2)}`;
-		if (score < 0) return `${score.toFixed(2)}`;
-		return "0.00";
-	}
-
 	useEffect(() => {
 		if(!gameFen) {
 			return;
@@ -72,32 +68,131 @@ const EvalBar = ({gameFen}: ChessboardProps) => {
 		findBestMove();
 	}, [gameFen]);
 
+	const scoreToPercent = (): number => {
+		if (possibleMate) {
+			// Game ended
+			if (movesToMateNormalized() === 0 && positionEvaluation > 0.0) {
+				return 100;
+			}
+
+			if (movesToMateNormalized() === 0 && positionEvaluation < 0.0) {
+				return 0;
+			}
+
+			// console.log("white? : ", whiteMove, " movesToMateNormalized: ", movesToMateNormalized());
+
+			// White mate
+			if (whiteMove && movesToMateNormalized() > 0) {
+				return 100;
+			} else if (!whiteMove && movesToMateNormalized() > 0) {
+				return 0;
+			}
+
+			// Black mate
+			return 0;
+		}
+
+		const normalized = Math.tanh(positionEvaluation / 4);
+
+		return ((normalized + 1) / 2) * 100;
+	};
+
+	// console.log("Depth: ", depth);
+	// console.log("Evaluation: ", positionEvaluation);
+	// console.log("Mate? ", possibleMate);
+
+	// 0 - end of game
+	// > 0 - white mating
+	// < 0 - black mating
+	const movesToMateNormalized = (): number => {
+		var mateIn: number;
+
+		try {
+			mateIn = Number(possibleMate);
+		} catch (error) {
+			console.error("Error fetching data: ", error);
+			return 9999;
+		}
+
+		// white move &	possibleMate < 0	=> black mating
+		// black move &	possibleMate < 0	=> white mating
+		// black move & possibleMate > 0 	=> black mating
+		// white move &	possibleMate > 0	=> white mating
+
+		if (mateIn < 0) {
+			if (whiteMove) {
+				return (-1 * mateIn);
+			}
+
+			return mateIn;
+		}
+
+		return mateIn;
+	}
+
+
+	const renderStatusTop = () => {
+		// Mate, black to move
+		if (possibleMate && positionEvaluation < 0.0) {
+			if (movesToMateNormalized() < 0) {
+				return (
+					<span>M{movesToMateNormalized()}</span>
+				);
+			}
+
+			if (movesToMateNormalized() === 0) {
+				return (
+					<span>#</span>
+				);
+			}
+		}
+
+		// No mate, eval < 0.0
+		if (!possibleMate && positionEvaluation < 0.0) {
+			return (
+				<span>{positionEvaluation}</span>
+			);
+		}
+
+		return <span></span>
+	}
+
+
+	const renderStatusBottom = () => {
+		// Mate, white to move
+		if (possibleMate && positionEvaluation > 0.0) {
+			if(movesToMateNormalized() > 0) {
+				return (
+					<span>M{possibleMate}</span>
+				);
+			}
+
+			if (movesToMateNormalized() === 0) {
+				return (
+					<span>#</span>
+				);
+			}
+		}
+
+		// No mate, eval >= 0.0
+		if (!possibleMate && positionEvaluation >= 0.0) {
+			return (
+				<span>{positionEvaluation}</span>
+			);
+		}
+
+		return <span></span>
+	}
+
 	return (
 	<div className='eval-bar-box'>
-		<div className='eval-bar-black'>
-			{ loading ? (
-				<span>0.0</span>
-			) : positionEvaluation >= 0 ? (
-				<span></span>
-			) : (
-				<span>{formatScore(positionEvaluation)}</span>
-				)
-			}
-		</div>
+		<div
+			className="eval-bar-range" 
+			style={{ height: `${scoreToPercent()}%`}}
+		></div>
 
-		<div className='eval-bar-range'>
-		</div>
-
-		<div className='eval-bar-white test'>
-			{ loading ? (
-				<span>0.0</span>
-			) : positionEvaluation>= 0 ? (
-				<span>{formatScore(positionEvaluation)}</span>
-			) : (
-				<span></span>
-				)
-			}
-		</div>
+		<div className="eval-top-text">{renderStatusTop()}</div>
+		<div className="eval-bottom-text">{renderStatusBottom()}</div>
 	</div>
 )}
 export default EvalBar
