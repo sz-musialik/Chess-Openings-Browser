@@ -8,11 +8,12 @@ import EvalBar from './EvalBar.tsx';
 
 type ChessboardProps = {
 	gameFen: string;
-	setGameFen: Dispatch<SetStateAction<string>>;
 	chessGame: Chess;
+	setGameFen: Dispatch<SetStateAction<string>>;
+	setBestMove: Dispatch<SetStateAction<string | null>>;
 };
 
-const ChessboardPanel = ( {gameFen, setGameFen, chessGame}: ChessboardProps ) => { 
+const ChessboardPanel = ( {gameFen, chessGame, setGameFen, setBestMove}: ChessboardProps ) => { 
 	const [moveFrom, setMoveFrom] = useState<string>('');
 	const [optionSquares, setOptionSquares] = useState<Record<string, React.CSSProperties>>({});
 
@@ -136,7 +137,7 @@ const ChessboardPanel = ( {gameFen, setGameFen, chessGame}: ChessboardProps ) =>
 	<div className='chessboard-container'>
 		<div className='chessboard-align'>
 			<div className='eval-bar-container'>
-				<EvalBar gameFen={gameFen}/>
+				<EvalBar gameFen={gameFen} setBestMove={setBestMove}/>
 			</div>
 
 			<div className='chessboard'>

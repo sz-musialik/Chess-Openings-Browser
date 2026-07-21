@@ -74,7 +74,51 @@ def get_top_moves(lines: LinesRequest):
         "variant": "standard",
         "fen": fen,
         "ratings": ",".join(map(str, ratings)),
-        "moves": 5
+        "moves": 4
+    }
+
+    try:
+        req = requests.Request(url=url, params=params, headers=headers).prepare()
+        print(req.url)
+
+        response = requests.get(url=url, params=params, headers=headers)
+
+        if response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail=response.text)
+
+        return response.json()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# TODO:
+# get_top_moves and get_engine_winrate are very similar
+# with only the amount of lines requested differs
+
+# TODO:
+# Endpoints should have better, more descriptive URI names
+
+"""
+Returns the winrate for the position with best engine evaluation.
+
+Args:
+    fen (str): FEN notation of the current position.
+    ratings (list[int]): List of Lichess players ratings.
+"""
+@app.post("/api/openings/engine")
+def get_engine_winrate(lines: LinesRequest):
+    if not LICHESS_TOKEN:
+        raise HTTPException(status_code=500, detail="No Lichess token on the backend")
+
+    fen = lines.fen
+    ratings = lines.ratings
+    url = API_EXPLORER_BASE_URL + "/lichess"
+    headers = {"Accept": "application/json", "Authorization": f"Bearer {LICHESS_TOKEN}"}
+    params={
+        "variant": "standard",
+        "fen": fen,
+        "ratings": ",".join(map(str, ratings)),
+        "moves": 1
     }
 
     try:

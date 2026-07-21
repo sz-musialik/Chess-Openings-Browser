@@ -1,3 +1,4 @@
+import { type Dispatch, type SetStateAction } from 'react';
 import { useState, useEffect, useMemo } from "react";
 import './EvalBar.css';
 import Engine from './Engine';
@@ -16,11 +17,10 @@ interface LichessEval {
 
 type ChessboardProps = {
 	gameFen: string;
+	setBestMove: Dispatch<SetStateAction<string | null>>;
 };
 
-const EvalBar = ({gameFen}: ChessboardProps) => { 
-	const [loading, setLoading] = useState<boolean>(false);
-
+const EvalBar = ({gameFen, setBestMove}: ChessboardProps) => { 
 	const engine = useMemo(() => new Engine(), []);
 	
 	const [positionEvaluation, setPositionEvaluation] = useState<number>(0);
@@ -183,6 +183,13 @@ const EvalBar = ({gameFen}: ChessboardProps) => {
 
 		return <span></span>
 	}
+
+	// Assign the best move
+	const bestMove = bestLine.split(' ')?.[0];
+
+	useEffect(() => {
+		setBestMove(bestMove);
+	}, [bestMove]);
 
 	return (
 	<div className='eval-bar-box'>
