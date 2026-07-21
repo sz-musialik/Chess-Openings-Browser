@@ -1,20 +1,22 @@
 .move-card-container {
 	width: 80%;
-	height: 3rem;
+	height: 2rem;
 
 	display: flex;
 	/* justify-content: center; */
 	align-items: center;
-	background-color: royalblue;
+	/* background-color: royalblue; */
 	margin: 0.2rem;
 	border-radius: 0.5rem;
 }
 
 .move-card, .line-attribute, .eval-container {
-	background-color: rebeccapurple;
 	width: 5rem;
-	height: 2rem;
+	height: 1.5rem;
 	margin: 0 auto;
+
+	font-size: 0.8em;
+	font-weight: bold;
 
 	border-radius: 0.25rem;
 
@@ -23,17 +25,16 @@
 	justify-content: center;
 }
 
+.move-card, .line-attribute {
+	background-color: var(--color-border);
+}
+
 .move-card {
 	margin-left: 0.5rem;
 }
 
 .line-attribute {
-	background-color: goldenrod;
-}
-
-
-.eval-container {
-	background-color: palevioletred;
+	background-color: var(--color-success);
 }
 
 .move-card-left, .move-card-right {
@@ -43,36 +44,49 @@
 
 .win-percentage-container {
 	width: 100%;
-	height: 2rem;
-	background-color: skyblue;
+	height: 1.5rem;
+	background-color: black;
 	margin: 0.5rem;
 
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-between;
 
 	border-radius: 0.25rem;
 	overflow: hidden;
 }
 
+/* TODO: */
+/* Maybe use position relative and absolute - same as the evalbar */
 .white-win, .black-win {
 	height: 100%;
-	width: 5rem;
+	width: 20%;
 
 	display: flex;
 	align-items: center;
 	justify-content: center;
 
-	font-size: 0.8rem;
+	font-size: 0.8em;
+	font-weight: bold;
 }
 
-.win-bar {
-	background-color: red;
-	width: 100%;
+.winrate-range {
+	background-color: black;
 	height: 100%;
+	width: 60%;
 
+	display: flex;
 }
 
+.winrate-range-white {
+	background-color: white;
+	height: 100%;
+}
+
+.winrate-range-draws {
+	background-color: var(--color-border);
+	height: 100%;
+}
 
 .white-win  {
 	background-color: white;

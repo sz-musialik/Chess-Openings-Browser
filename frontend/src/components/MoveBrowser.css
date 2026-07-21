@@ -16,3 +16,24 @@
 	align-items: center;
 	flex-direction: column;
 }
+
+.get-winrates-button {
+	background-color: var(--color-surface);
+	color: var(--color-text);
+	font-weight: bold;
+	padding: 0.3rem 3rem;
+	margin: 0.5rem 0;
+
+	transition: background-color 0.5s ease 0s;
+
+	border-radius: 0.25rem;
+	border-style: solid;
+	border-width: 2px;
+	border-color: var(--color-border);
+}
+
+.get-winrates-button:hover {
+	background-color: var(--color-border);
+	color: var(--color-background);
+	cursor: pointer;
+}

@@ -17,13 +17,14 @@ interface LichessEval {
 
 type ChessboardProps = {
 	gameFen: string;
+	positionEvaluation: number;
+	setPositionEvaluation: Dispatch<SetStateAction<number>>;
 	setBestMove: Dispatch<SetStateAction<string | null>>;
 };
 
-const EvalBar = ({gameFen, setBestMove}: ChessboardProps) => { 
+const EvalBar = ({gameFen, positionEvaluation, setPositionEvaluation, setBestMove}: ChessboardProps) => { 
 	const engine = useMemo(() => new Engine(), []);
 	
-	const [positionEvaluation, setPositionEvaluation] = useState<number>(0);
 	const [depth, setDepth] = useState<number>(10);
 	const [bestLine, setBestLine] = useState<string>('');
 	const [possibleMate, setPossibleMate] = useState<string>('');

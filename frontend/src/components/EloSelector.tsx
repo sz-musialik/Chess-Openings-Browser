@@ -52,6 +52,40 @@ const EloSelector = ( {eloValue, setEloValue}: EloSelectorProps) => {
         onChange={handleChange}
         valueLabelDisplay="auto"
 				marks={marks}
+				sx={{
+					'& .MuiSlider-thumb': {
+						backgroundColor: 'var(--color-border)',
+						border: '2px solid var(--color-text-muted)',
+					},
+
+					'& .MuiSlider-track': {
+						backgroundColor: 'var(--color-focus)',
+						border: 'none',
+					},
+
+					'& .MuiSlider-rail': {
+						backgroundColor: 'var(--color-text-muted)',
+						opacity: 0.5,
+					},
+
+					'& .MuiSlider-mark': {
+						backgroundColor: 'var(--color-text)',
+						width: 2,
+						height: 8,
+					},
+
+					'& .MuiSlider-markLabel': {
+						color: 'var(--color-text)',
+						fontWeight: 'bold',
+					},
+
+					'& .MuiSlider-valueLabel': {
+						backgroundColor: 'var(--color-surface)',
+						border: '1px solid var(--color-border)',
+						color: 'var(--color-text)',
+						fontWeight: 'bold',
+					},
+				}}
       />
     </Box>
 	</div>

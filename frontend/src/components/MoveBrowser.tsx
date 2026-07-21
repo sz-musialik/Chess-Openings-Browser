@@ -25,10 +25,12 @@ type MoveBrowserProps = {
 	gameFen: string;
 	bestMove: string | null;
 	chessGame: Chess;
+	positionEvaluation: number;
+	setPositionEvaluation: Dispatch<SetStateAction<number>>;
 	setGameFen: Dispatch<SetStateAction<string>>;
 };
 
-const MoveBrowser = ( {gameFen, bestMove, chessGame, setGameFen}: MoveBrowserProps ) => { 
+const MoveBrowser = ( {gameFen, bestMove, chessGame, positionEvaluation, setPositionEvaluation, setGameFen}: MoveBrowserProps ) => { 
 	const [eloValue, setEloValue] = useState<number[]>([1600, 1800]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [lichessData, setLichessData] = useState<LichessExplorerData | null>(null);
@@ -136,7 +138,7 @@ const MoveBrowser = ( {gameFen, bestMove, chessGame, setGameFen}: MoveBrowserPro
 	return (
 	<div className='move-browser-container'>
 		<div className='move-browser-align'>
-			<Button onClick={getEngineWinrate}>Kliknij mnie</Button>
+			<button className='get-winrates-button' onClick={getEngineWinrate}>Get line winrates</button>
 
 			<EloSelector eloValue={eloValue} setEloValue={setEloValue}/>
 
@@ -147,6 +149,7 @@ const MoveBrowser = ( {gameFen, bestMove, chessGame, setGameFen}: MoveBrowserPro
 					<MoveCard 
 						key={move.san}
 						move={move}
+						positionEvaluation={positionEvaluation}
 					/>
 				))
 			)}

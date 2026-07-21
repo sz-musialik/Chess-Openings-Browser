@@ -32,6 +32,8 @@ function App() {
 
 	const [bestMove, setBestMove] = useState<string | null>(null);
 
+	const [positionEvaluation, setPositionEvaluation] = useState<number>(0);
+
 	console.log("bestMove: ", bestMove);
 
 	return (
@@ -39,11 +41,25 @@ function App() {
 			<Navbar/>
 
 			<div className='chessboard-panel'>
-				<ChessboardPanel gameFen={gameFen} chessGame={chessGame} setGameFen={setGameFen} setBestMove={setBestMove}/>
+				<ChessboardPanel
+					gameFen={gameFen}
+					chessGame={chessGame}
+					positionEvaluation={positionEvaluation}
+					setPositionEvaluation={setPositionEvaluation}
+					setGameFen={setGameFen}
+					setBestMove={setBestMove}
+				/>
 			</div>
 
 			<div className='move-browser-panel'>
-				<MoveBrowser gameFen={gameFen} chessGame={chessGame} bestMove={bestMove} setGameFen={setGameFen}/>
+				<MoveBrowser
+					gameFen={gameFen}
+					chessGame={chessGame}
+					bestMove={bestMove}
+					positionEvaluation={positionEvaluation}
+					setPositionEvaluation={setPositionEvaluation}
+					setGameFen={setGameFen}
+				/>
 			</div>
 		</main>
 	)

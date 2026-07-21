@@ -9,6 +9,7 @@ interface LichessMove {
 
 type MoveCardProps = {
 	move: LichessMove;
+	positionEvaluation: number;
 };
 
 interface ResultPercentage {
@@ -27,7 +28,18 @@ function winPercentage(white: number, black: number, draws: number) : ResultPerc
 	return {white: whitePct, draw: drawPct, black: blackPct};
 }
 
-const MoveCard = ( {move}: MoveCardProps ) => { 
+const MoveCard = ( {move, positionEvaluation}: MoveCardProps ) => { 
+	const colorEvalContainer = (): string => {
+		return positionEvaluation < 0.0 ? "#000000" : "#FFFFFF";
+	};
+
+	const fontColorEvalContainer = (): string => {
+		return positionEvaluation < 0.0 ? "#FFFFFF" : "#000000";
+	};
+
+	// TODO:
+	// Currently only works for the current position
+	// Later will have to positions with lines from api to the engine to get their eval
 	return (
 	<div className='move-card-container'>
 		<div className='move-card-left'>
@@ -36,12 +48,16 @@ const MoveCard = ( {move}: MoveCardProps ) => {
 			</div>
 
 			<div className='line-attribute'>
-				<span>(!?)</span>
+				<span>✓</span>
 			</div>
 
-			<div className='eval-container'>
-				<span>(+0.1)</span>
-			</div>
+			<div
+				className='eval-container'
+				style={{
+					backgroundColor: colorEvalContainer(),
+					color: fontColorEvalContainer()
+				}}
+			><span>{positionEvaluation}</span></div>
 		</div>
 
 
@@ -53,10 +69,15 @@ const MoveCard = ( {move}: MoveCardProps ) => {
 					</span>
 				</div>
 
-				<div className='win-bar'>
-					<div className='win-bar-white'></div>
-					<div className='win-bar-draw'></div>
-					<div className='win-bar-black'></div>
+				<div className='winrate-range'>
+					<div
+						className='winrate-range-white'
+						style={{ width: `${winPercentage(move.white, move.black, move.draws).white}%`}}
+					></div>
+					<div
+						className='winrate-range-draws'
+						style={{ width: `${winPercentage(move.white, move.black, move.draws).draw}%`}}
+					></div>
 				</div>
 
 				<div className='black-win'>
